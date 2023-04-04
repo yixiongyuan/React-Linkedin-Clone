@@ -9,11 +9,15 @@ import CalendarViewDayIcon from '@mui/icons-material/CalendarViewDay';
 import Post from './Post';
 import { db } from './firebase'
 import firebase from 'firebase/compat/app'
+import { useSelector } from 'react-redux';
+import { selectUser } from './features/userSlice';
 
 function Feed() {
 
     const [input, setInput] = useState('')
     const [posts, setPosts] = useState([])
+
+    const user = useSelector(selectUser)
 
 
     useEffect(() => {
@@ -33,19 +37,24 @@ function Feed() {
     }, [])
 
     const sendPost = (e) => {
-
+        
         e.preventDefault();
 
-        db.collection('posts').add({
+        if(input.length>0){
+            
 
-            name: 'kobe bryant',
-            descripition: 'this is a test',
-            message: input,
-            photoUrl: "",
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-        });
-
-        setInput("")
+            db.collection('posts').add({
+    
+                name: user.displayName,
+                descripition: user.email,
+                message: input,
+                photoUrl: user.photoUrl || "",
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            });
+    
+            setInput("")
+        }
+       
     };
 
     return (
@@ -86,7 +95,7 @@ function Feed() {
 
                     <InputOption
                         Icon={CalendarViewDayIcon}
-                        title='Write Article'
+                        title='Article'
                         color="#7FC15E" />
 
 

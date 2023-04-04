@@ -12,7 +12,9 @@ function Post({name,descripition,message,photoUrl}) {
     <div className='post'>
         <div className="post_header">
 
-            <Avatar />
+            <Avatar src={photoUrl}>
+                {descripition[0]}
+            </Avatar>
 
             <div className="post_info">
                 <h2>{name}</h2>
